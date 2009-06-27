@@ -1,10 +1,11 @@
 class ImageCrusher
 
-    class CrushToolNotAvailable < StandardError
-    end
+  class CrushToolNotAvailable < StandardError
+  end
 
-    class InputFileNotFound < StandardError
-    end
+  class InputFileNotFound < StandardError
+  end
+
 end
 
 def ImageCrusher(path)
