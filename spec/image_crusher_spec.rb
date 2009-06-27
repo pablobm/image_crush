@@ -15,4 +15,10 @@ describe ImageCrusher do
     end
   end
 
+  describe 'shortcuts' do
+    it 'should call ImageCrusher.crush(path) upon a clal to ImageCrusher(path)' do
+      ImageCrusher.should_receive(:crush).with('blah')
+      ImageCrusher('blah')
+    end
+  end
 end
