@@ -7,7 +7,7 @@ describe ImageCrusher do
 
   describe 'exception conditions' do
     it 'should fail when the input file does not exist' do
-      lambda{ImageCrusher('/path/to/nowhere/fast')}.should raise_error(Errno::ENOENT)
+      lambda{ImageCrusher('/path/to/nowhere/fast')}.should raise_error(ImageCrusher::InputFileNotFound)
     end
 
     it 'should fail when the crush tool is not available' do
