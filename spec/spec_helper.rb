@@ -1,5 +1,5 @@
 $: << File.join(File.dirname(File.dirname(__FILE__)), 'lib')
 
-require 'image_crusher'
-require 'image_crusher/pngcrush'
+require 'image_crush'
+require 'image_crush/pngcrush'
 

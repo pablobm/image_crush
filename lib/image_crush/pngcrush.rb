@@ -1,4 +1,4 @@
-module ImageCrusher
+module ImageCrush
 
   module Pngcrush
     def self.available?

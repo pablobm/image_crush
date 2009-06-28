@@ -3,26 +3,26 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 require 'tmpdir'
 require 'fileutils'
 
-describe ImageCrusher do
+describe ImageCrush do
 
   FIXTURES_ROOT = File.join(File.dirname(__FILE__), 'fixtures')
   DICE_PATH = File.join(FIXTURES_ROOT, 'dice.png')
-
+  
   describe 'exception conditions' do
     it 'should fail when the input file does not exist' do
-      lambda{ImageCrusher('/path/to/nowhere/fast')}.should raise_error(ImageCrusher::InputFileNotFound)
+      lambda{ImageCrush('/path/to/nowhere/fast')}.should raise_error(ImageCrush::InputFileNotFound)
     end
 
     it 'should fail when the crush tool is not available' do
-      ImageCrusher::Pngcrush.should_receive(:available?).and_return(false)
-      lambda{ImageCrusher(DICE_PATH)}.should raise_error(ImageCrusher::CrushToolNotAvailable)
+      ImageCrush::Pngcrush.should_receive(:available?).and_return(false)
+      lambda{ImageCrush(DICE_PATH)}.should raise_error(ImageCrush::CrushToolNotAvailable)
     end
   end
 
   describe 'shortcuts' do
-    it 'should call ImageCrusher.crush(path) upon a clal to ImageCrusher(path)' do
-      ImageCrusher.should_receive(:crush).with('blah')
-      ImageCrusher('blah')
+    it 'should call ImageCrush.crush(path) upon a clal to ImageCrush(path)' do
+      ImageCrush.should_receive(:crush).with('blah')
+      ImageCrush('blah')
     end
   end
 
@@ -38,7 +38,7 @@ describe ImageCrusher do
       f = File.open(@dice_path)
       size_before = f.stat.size
       f.close
-      ImageCrusher(@dice_path)
+      ImageCrush(@dice_path)
       f = File.open(@dice_path)
       size_after = f.stat.size
       f.close
