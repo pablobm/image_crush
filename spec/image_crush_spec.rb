@@ -7,6 +7,7 @@ describe ImageCrush do
 
   FIXTURES_ROOT = File.join(File.dirname(__FILE__), 'fixtures')
   DICE_PATH = File.join(FIXTURES_ROOT, 'dice.png')
+  CCBY_PATH = File.join(FIXTURES_ROOT, 'subdir', 'cc-by-icon.png')
   
   describe 'exception conditions' do
     it 'should fail when the input file does not exist' do
@@ -45,4 +46,37 @@ describe ImageCrush do
       size_after.should < size_before
     end
   end
+
+  describe 'recursive crush' do
+    before do
+      @work_dir = File.join(Dir.tmpdir, 'image_crusher')
+      FileUtils.rm_rf(@work_dir)
+      FileUtils.mkdir_p(@work_dir)
+      FileUtils.cp_r Dir.glob(File.join(FIXTURES_ROOT, '**')), @work_dir
+      @dice_path = File.join(@work_dir, File.basename(DICE_PATH))
+      @ccby_path = File.join(@work_dir, 'subdir', File.basename(CCBY_PATH))
+    end
+
+    it 'should recursively crush all images in a directory' do
+      f1 = File.open(@dice_path)
+      size1_before = f1.stat.size
+      f1.close
+      f2 = File.open(@ccby_path)
+      size2_before = f2.stat.size
+      f2.close
+      
+      ImageCrush(@work_dir)
+      
+      f1 = File.open(@dice_path)
+      size1_after = f1.stat.size
+      f1.close
+      f2 = File.open(@ccby_path)
+      size2_after = f2.stat.size
+      f2.close
+      
+      size1_after.should < size1_before
+      size2_after.should < size2_before
+    end
+  end
+
 end
