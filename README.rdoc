@@ -1,0 +1,33 @@
+= ImageCrush
+
+Reduce the size of PNG and JPEG files using the +pngcrush+ and +jpegtran+ tools,
+as described at http://yuiblog.com/blog/2008/11/14/imageopt-3/
+
+== Usage
+
+The tools *pngcrush and jpegtran must be installed* on your system.
+
+Can be used with single files and with directories:
+
+  require 'image_crush'
+  ImageCrush('path/to/image.png')
+  ImageCrush('path/to/image.jpg')
+  ImageCrush('path/to/dir')
+
+== Rake task for Rails
+
+ImageCrush also comes with a handy rake task to be used with Ruby on Rails. To
+use it, add the following line to your Rakefile:
+
+  require 'image_crush'
+
+Then, simply invoke the task with:
+
+  rake crush
+
+This will automatically traverse your public/images directory and reduce the
+size of all PNG/JPEG files, including subdirectories.
+
+
+Copyright (c) 2008 Pablo Brasero Moreno. See LICENSE for further details.
+
