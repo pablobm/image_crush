@@ -22,7 +22,7 @@ describe ImageCrush do
   end
 
   describe 'shortcuts' do
-    it 'should call ImageCrush.crush(path) upon a clal to ImageCrush(path)' do
+    it 'should call ImageCrush.crush(path) upon a call to ImageCrush(path)' do
       ImageCrush.should_receive(:crush).with('blah')
       ImageCrush('blah')
     end
