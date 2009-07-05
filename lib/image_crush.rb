@@ -17,14 +17,7 @@ module ImageCrush
   end
 
   def self.crush_file(path)
-    processor = case path
-    when /\.png$/i
-      Pngcrush
-    when /\.jpe?g$/i
-      Jpegtran
-    else
-      return nil
-    end
+    processor = select_processor(path) or return nil
     source_path = copy_to_tempdir(path)
     crushed_path = source_path + '.crushed'
     processor.crush(source_path, crushed_path)
@@ -35,6 +28,15 @@ module ImageCrush
     Dir.foreach(path) do |entry|
       next if %w{. ..}.include?(entry)
       crush(File.join(path, entry))
+    end
+  end
+
+  def self.select_processor(path)
+    case path
+    when /\.png$/i
+      Pngcrush
+    when /\.jpe?g$/i
+      Jpegtran
     end
   end
 
