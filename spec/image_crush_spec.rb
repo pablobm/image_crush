@@ -10,7 +10,15 @@ describe ImageCrush do
   CCBY_PATH = File.join(FIXTURES_ROOT, 'subdir', 'cc-by-icon.png')
   MMAN_PATH = File.join(FIXTURES_ROOT, 'happy-mailman.jpg')
   README_PATH = File.join(FIXTURES_ROOT, 'README.txt')
-    
+
+  before :each do
+    remove_work_dir
+  end
+
+  after :all do
+    remove_work_dir
+  end
+
   describe 'exception conditions' do
     it 'should fail when the input file does not exist' do
       lambda{ImageCrush('/path/to/nowhere/fast')}.should raise_error(ImageCrush::InputFileNotFound)
@@ -50,8 +58,7 @@ describe ImageCrush do
     private
 
     def copy_file_to_tmpdir(path)
-      tmpdir = File.join(Dir.tmpdir, 'image_crush.spec')
-      FileUtils.mkdir_p(tmpdir)
+      tmpdir = create_work_dir
       FileUtils.cp path, tmpdir
       File.join(tmpdir, path.gsub(FIXTURES_ROOT, ''))
     end
@@ -71,9 +78,7 @@ describe ImageCrush do
 
   describe 'recursive crush' do
     before do
-      @work_dir = File.join(Dir.tmpdir, 'image_crush.spec')
-      FileUtils.rm_rf(@work_dir)
-      FileUtils.mkdir_p(@work_dir)
+      @work_dir = create_work_dir
       FileUtils.cp_r Dir.glob(File.join(FIXTURES_ROOT, '**')), @work_dir
       @dice_path = File.join(@work_dir, File.basename(DICE_PATH))
       @ccby_path = File.join(@work_dir, 'subdir', File.basename(CCBY_PATH))
@@ -101,4 +106,15 @@ describe ImageCrush do
     end
   end
 
+
+  private
+
+  def remove_work_dir
+    FileUtils.rm_rf(File.join(Dir.tmpdir, 'image_crush.spec'))
+  end
+
+  def create_work_dir
+    @work_dir = File.join(Dir.tmpdir, 'image_crush.spec')
+    FileUtils.mkdir_p(@work_dir)
+  end
 end
