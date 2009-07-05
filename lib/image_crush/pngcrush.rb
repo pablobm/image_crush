@@ -6,7 +6,7 @@ module ImageCrush
     end
 
     def self.crush(inpath, outpath)
-      %x{pngcrush #{inpath} #{outpath}}
+      %x{pngcrush -rem alla -brute -reduce #{inpath} #{outpath}}
     end
 
   end
