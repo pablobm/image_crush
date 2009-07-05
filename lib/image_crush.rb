@@ -5,7 +5,6 @@ module ImageCrush
 
   def self.crush(path)
     raise ImageCrush::InputFileNotFound unless File.exist?(path)
-    raise ImageCrush::CrushToolNotAvailable unless Pngcrush.available?
 
     if File.file?(path)
       crush_file(path)
