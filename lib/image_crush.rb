@@ -16,7 +16,10 @@ module ImageCrush
   end
 
   def self.crush_file(path)
-    Pngcrush.crush(path)
+    source_path = copy_to_tempdir(path)
+    crushed_path = source_path + '.crushed'
+    Pngcrush.crush(source_path, crushed_path)
+    FileUtils.cp(crushed_path, path) if File.exist?(crushed_path)
   end
 
   def self.crush_dir(path)
@@ -24,6 +27,18 @@ module ImageCrush
       next if %w{. ..}.include?(entry)
       crush(File.join(path, entry))
     end
+  end
+
+  def self.copy_to_tempdir(path)
+    wdir = tmpdir
+    FileUtils.cp_r path, wdir
+    File.join(wdir, File.basename(path))
+  end
+
+  def self.tmpdir
+    ret = File.join(Dir.tmpdir, 'pngcrush')
+    FileUtils.mkdir_p(ret)
+    ret
   end
 
   class CrushToolNotAvailable < StandardError
