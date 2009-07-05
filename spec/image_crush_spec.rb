@@ -28,45 +28,39 @@ describe ImageCrush do
     end
   end
 
-  describe 'crushing dice.png' do
-    before do
-      tmpdir = File.join(Dir.tmpdir, 'image_crush.spec')
-      FileUtils.mkdir_p(tmpdir)
-      FileUtils.cp DICE_PATH, tmpdir
-      @dice_path = File.join(tmpdir, 'dice.png')
+  describe 'individual files' do
+    it 'should crush PNG files' do
+      image_path = copy_file_to_tmpdir(DICE_PATH)
+      should_reduce_size_of_image(image_path)
     end
 
-    it 'should reduce the file size' do
-      f = File.open(@dice_path)
+    it 'should crush JPEG files' do
+      image_path = copy_file_to_tmpdir(MMAN_PATH)
+      should_reduce_size_of_image(image_path)
+    end
+
+
+    private
+
+    def copy_file_to_tmpdir(path)
+      tmpdir = File.join(Dir.tmpdir, 'image_crush.spec')
+      FileUtils.mkdir_p(tmpdir)
+      FileUtils.cp path, tmpdir
+      File.join(tmpdir, path.gsub(FIXTURES_ROOT, ''))
+    end
+
+    def should_reduce_size_of_image(path)
+      f = File.open(path)
       size_before = f.stat.size
       f.close
-      ImageCrush(@dice_path)
-      f = File.open(@dice_path)
+      ImageCrush(path)
+      f = File.open(path)
       size_after = f.stat.size
       f.close
       size_after.should < size_before
     end
   end
 
-  describe 'crushing happy-mailman.jpg' do
-    before do
-      tmpdir = File.join(Dir.tmpdir, 'image_crush.spec')
-      FileUtils.mkdir_p(tmpdir)
-      FileUtils.cp MMAN_PATH, tmpdir
-      @mman_path = File.join(tmpdir, 'happy-mailman.jpg')
-    end
-
-    it 'should reduce the file size' do
-      f = File.open(@mman_path)
-      size_before = f.stat.size
-      f.close
-      ImageCrush(@mman_path)
-      f = File.open(@mman_path)
-      size_after = f.stat.size
-      f.close
-      size_after.should < size_before
-    end
-  end
 
   describe 'recursive crush' do
     before do
