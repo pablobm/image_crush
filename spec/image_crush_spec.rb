@@ -8,7 +8,8 @@ describe ImageCrush do
   FIXTURES_ROOT = File.join(File.dirname(__FILE__), 'fixtures')
   DICE_PATH = File.join(FIXTURES_ROOT, 'dice.png')
   CCBY_PATH = File.join(FIXTURES_ROOT, 'subdir', 'cc-by-icon.png')
-  
+  MMAN_PATH = File.join(FIXTURES_ROOT, 'happy-mailman.jpg')
+    
   describe 'exception conditions' do
     it 'should fail when the input file does not exist' do
       lambda{ImageCrush('/path/to/nowhere/fast')}.should raise_error(ImageCrush::InputFileNotFound)
@@ -29,7 +30,7 @@ describe ImageCrush do
 
   describe 'crushing dice.png' do
     before do
-      tmpdir = File.join(Dir.tmpdir, 'image_crusher')
+      tmpdir = File.join(Dir.tmpdir, 'image_crush.spec')
       FileUtils.mkdir_p(tmpdir)
       FileUtils.cp DICE_PATH, tmpdir
       @dice_path = File.join(tmpdir, 'dice.png')
@@ -47,9 +48,29 @@ describe ImageCrush do
     end
   end
 
+  describe 'crushing happy-mailman.jpg' do
+    before do
+      tmpdir = File.join(Dir.tmpdir, 'image_crush.spec')
+      FileUtils.mkdir_p(tmpdir)
+      FileUtils.cp MMAN_PATH, tmpdir
+      @mman_path = File.join(tmpdir, 'happy-mailman.jpg')
+    end
+
+    it 'should reduce the file size' do
+      f = File.open(@mman_path)
+      size_before = f.stat.size
+      f.close
+      ImageCrush(@mman_path)
+      f = File.open(@mman_path)
+      size_after = f.stat.size
+      f.close
+      size_after.should < size_before
+    end
+  end
+
   describe 'recursive crush' do
     before do
-      @work_dir = File.join(Dir.tmpdir, 'image_crusher')
+      @work_dir = File.join(Dir.tmpdir, 'image_crush.spec')
       FileUtils.rm_rf(@work_dir)
       FileUtils.mkdir_p(@work_dir)
       FileUtils.cp_r Dir.glob(File.join(FIXTURES_ROOT, '**')), @work_dir

@@ -1,4 +1,5 @@
 require 'image_crush/pngcrush'
+require 'image_crush/jpegtran'
 
 module ImageCrush
 
@@ -18,7 +19,12 @@ module ImageCrush
   def self.crush_file(path)
     source_path = copy_to_tempdir(path)
     crushed_path = source_path + '.crushed'
-    Pngcrush.crush(source_path, crushed_path)
+    case source_path
+    when /\.png$/i
+      Pngcrush.crush(source_path, crushed_path)
+    when /\.jpe?g$/i
+      Jpegtran.crush(source_path, crushed_path)
+    end
     FileUtils.cp(crushed_path, path) if File.exist?(crushed_path)
   end
 
@@ -36,7 +42,7 @@ module ImageCrush
   end
 
   def self.tmpdir
-    ret = File.join(Dir.tmpdir, 'pngcrush')
+    ret = File.join(Dir.tmpdir, 'image_crush')
     FileUtils.mkdir_p(ret)
     ret
   end
