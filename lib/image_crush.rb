@@ -17,14 +17,17 @@ module ImageCrush
   end
 
   def self.crush_file(path)
+    processor = case path
+    when /\.png$/i
+      Pngcrush
+    when /\.jpe?g$/i
+      Jpegtran
+    else
+      return nil
+    end
     source_path = copy_to_tempdir(path)
     crushed_path = source_path + '.crushed'
-    case source_path
-    when /\.png$/i
-      Pngcrush.crush(source_path, crushed_path)
-    when /\.jpe?g$/i
-      Jpegtran.crush(source_path, crushed_path)
-    end
+    processor.crush(source_path, crushed_path)
     FileUtils.cp(crushed_path, path) if File.exist?(crushed_path)
   end
 

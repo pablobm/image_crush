@@ -9,6 +9,7 @@ describe ImageCrush do
   DICE_PATH = File.join(FIXTURES_ROOT, 'dice.png')
   CCBY_PATH = File.join(FIXTURES_ROOT, 'subdir', 'cc-by-icon.png')
   MMAN_PATH = File.join(FIXTURES_ROOT, 'happy-mailman.jpg')
+  README_PATH = File.join(FIXTURES_ROOT, 'README.txt')
     
   describe 'exception conditions' do
     it 'should fail when the input file does not exist' do
@@ -37,6 +38,12 @@ describe ImageCrush do
     it 'should crush JPEG files' do
       image_path = copy_file_to_tmpdir(MMAN_PATH)
       should_reduce_size_of_image(image_path)
+    end
+
+    it 'should ignore other files' do
+      path = copy_file_to_tmpdir(README_PATH)
+      ImageCrush(path)
+      File.exist?('/tmp/image_crush/README.txt').should == false
     end
 
 
