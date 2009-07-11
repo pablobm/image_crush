@@ -20,7 +20,7 @@ module ImageCrush
         
         def human_size(bytes)
           if bytes < 1024
-            bytes
+            bytes + 'B'
           else
             sprintf("%0.1fK", bytes.to_f/1024).gsub('.0K', 'K')
           end
