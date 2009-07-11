@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "image_crush"
-  s.version = "1.0"
+  s.version = "1.1"
   s.summary = "Reduce the size of PNG and JPEG files"
   s.email = "pablobm@gmail.com"
   s.homepage = "http://github.com/pablobm/image_crush"
