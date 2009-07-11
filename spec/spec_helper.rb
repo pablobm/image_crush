@@ -1,7 +1,6 @@
 $: << File.join(File.dirname(File.dirname(__FILE__)), 'lib')
 
 require 'image_crush'
-require 'image_crush/pngcrush'
 
 FIXTURES_ROOT = File.join(File.dirname(__FILE__), 'fixtures')
 DICE_PATH = File.join(FIXTURES_ROOT, 'dice.png')
