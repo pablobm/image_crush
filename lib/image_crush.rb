@@ -9,5 +9,5 @@ require File.join(base_dir, 'jpegtran')
 load File.join(File.dirname(ImageCrush::LIB_ROOT), 'tasks', 'image_crush.rake')
 
 def ImageCrush(path)
-  ImageCrush.crush(path)
+  ImageCrush::Base.new.crush(path)
 end

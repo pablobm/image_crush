@@ -30,13 +30,6 @@ describe ImageCrush do
     end
   end
 
-  describe 'shortcuts' do
-    it 'should call ImageCrush.crush(path) upon a call to ImageCrush(path)' do
-      ImageCrush.should_receive(:crush).with('blah')
-      ImageCrush('blah')
-    end
-  end
-
   describe 'individual files' do
     it 'should crush PNG files' do
       image_path = copy_file_to_tmpdir(DICE_PATH)
